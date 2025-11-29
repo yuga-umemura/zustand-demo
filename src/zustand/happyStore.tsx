@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { devtools } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 
 type happyStoreStateType = {
@@ -23,16 +24,18 @@ type happyStoreStateType = {
 //     );
 
 const useHappyStore = create<happyStoreStateType>()(
-  immer((set, get) => ({
-    happys: 0,
+  devtools(
+    immer((set, get) => ({
+      happys: 0,
 
-    happysUp: () =>
-      set((state) => {
-        state.happys++;
-      }),
+      happysUp: () =>
+        set((state) => {
+          state.happys++;
+        }),
 
-    showHappys: () => alert(`Current happys: ${get().happys}`),
-  }))
+      showHappys: () => alert(`Current happys: ${get().happys}`),
+    }))
+  )
 );
 
 export { useHappyStore };
