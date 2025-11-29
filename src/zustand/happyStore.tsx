@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { devtools } from "zustand/middleware";
+import { createJSONStorage, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 
 type happyStoreStateType = {
@@ -24,7 +24,7 @@ type happyStoreStateType = {
 //     );
 
 const useHappyStore = create<happyStoreStateType>()(
-  devtools(
+  persist(
     immer((set, get) => ({
       happys: 0,
 
@@ -34,7 +34,11 @@ const useHappyStore = create<happyStoreStateType>()(
         }),
 
       showHappys: () => alert(`Current happys: ${get().happys}`),
-    }))
+    })),
+    {
+      name: "happyStorage",
+      storage: createJSONStorage(() => sessionStorage),
+    }
   )
 );
 
